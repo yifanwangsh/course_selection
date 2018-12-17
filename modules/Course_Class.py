@@ -27,7 +27,7 @@ class Course:
     def getPrice(self):
         return self.__price
 
-    def setPeriod(self, price):
+    def setPrice(self, price):
         if not isinstance(price, int):
             raise TypeError("Course price must be an int")   
         self.__price = price

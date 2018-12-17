@@ -1,5 +1,15 @@
-chlist={'1':"Student Class",'2':"Teacher Class",'3':"School Class"}
+import sys
+import os
 
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(base_dir)
+
+from modules import School_Class
+from modules import Course_Class
+
+chlist={'1':"Student Class",'2':"Teacher Class",'3':"School Class"}
+School=School_Class.School
+Course=Course_Class.Course
 
 def run():
     while True:
@@ -36,6 +46,4 @@ def setup():
     beijing.addCourse(python)
 
 setup()
-
-
 run()

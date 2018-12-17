@@ -1,6 +1,9 @@
 import uuid
-from Person_Class import *
-from School_Class import *
+from modules import Course_Class
+from modules import School_Class
+
+School = School_Class.School
+Course = Course_Class.Course
 
 class Person:
     def __init__(self, name, role):

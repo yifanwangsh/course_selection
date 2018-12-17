@@ -1,4 +1,6 @@
-from Course_Class import *
+from modules import Course_Class
+
+Course = Course_Class.Course
 
 class School:
     def __init__ (self, location):
