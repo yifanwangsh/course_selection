@@ -12,8 +12,8 @@ class Student(Person.Person):
             print ("Already enrolled")
             return self.__section
         
-        self.__section.append(section_id)
-        return self.__section
+        update_student_grades_info="INSERT INTO public.student_grades(student_id,section_id) VALUES (" + str(self.getId()) + "," + str(self.getId()) + ")"
+        super().writeToDB(update_student_grades_info)
 
     def paytuition():
         print ("Tuition paid!")

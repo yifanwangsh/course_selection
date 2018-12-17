@@ -27,6 +27,3 @@ class Admin_system(System.System):
     def createCourse(cls,course_name,period,price):
         update_course_info_sql="INSERT INTO public.course_info(course_name,price,period) VALUES (\'" + course_name + "\'," + str(price) + "," + str(period) + ")"
         super().writeToDB(update_course_info_sql)
-
-a=Admin_system()
-a.createCourse("python",123,456)

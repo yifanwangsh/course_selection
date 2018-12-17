@@ -1,11 +1,7 @@
 import uuid
-import Course
-import School
+import System
 
-School = School.School
-Course = Course.Course
-
-class Person:
+class Person(System.System):
     def __init__(self, name, id):
         self.__name = name
         self.__id = id

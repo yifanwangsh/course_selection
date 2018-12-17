@@ -1,9 +1,8 @@
 import psycopg2
 import uuid
 import Student
+import Section
 import System
-
-Student=Student.Student
 
 class Student_system(System.System):
     def __init__(self):
@@ -36,16 +35,3 @@ class Student_system(System.System):
         update_student_info="INSERT INTO public.student_info(name,id) VALUES (\'" + username + "\'," + str(random_id) + ")"
         super().writeToDB(update_student_info)
 
-    @classmethod
-    def enroll(cls,student, section_id):
-        if not isinstance (student,Student):
-            raise TypeError("Rejected")
-            return
-        sections=student.enroll(section_id)
-
-        section_str=str(sections).replace("[","{").replace("]","}")
-        update_student_info_sql="UPDATE public.student_info SET section_id = \'" + section_str + "\' WHERE name = \'" + student.getName() + "\'"
-        super().writeTODB(update_student_info_sql)
-
-s=Student_system()
-s.login("user2","user2")

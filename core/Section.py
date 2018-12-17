@@ -1,9 +1,4 @@
-import Course
-import Teacher
 import uuid
-
-Course = Course.Course
-Teacher = Teacher.Teacher
 
 class Section:
     def __init__(self):
@@ -11,4 +6,7 @@ class Section:
 
     @staticmethod
     def gernerateId():
-        return uuid.uuid4()    
+        return uuid.uuid4()
+
+    def getId():
+        return self.__id 
