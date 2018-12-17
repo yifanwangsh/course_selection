@@ -1,17 +1,21 @@
-import json
-import sys
-import os
-
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(base_dir)
-
-with open (base_dir+"\db\\auth_info.json") as f:
-    data=json.load(f)
+import psycopg2
 
 class System:
-    def __init__(self,username,password):
-        if username in data and password==data[username]:
-            print ("Login as " + username)
-        else:
-            print ("Login failed")
-            return
+    def __init__():
+        pass
+    
+    @staticmethod
+    def readFromDB(sql):
+        conn=psycopg2.connect(host="localhost",dbname="python",user="postgres",password="admin")
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    @staticmethod
+    def writeToDB(sql):
+        conn=psycopg2.connect(host="localhost",dbname="python",user="postgres",password="admin")
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        conn.commit()
+        cursor.close()
+        conn.close()

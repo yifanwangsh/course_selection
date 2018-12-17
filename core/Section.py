@@ -1,9 +1,9 @@
-from modules import Course_Class
-from modules import Teacher_Class
+import Course
+import Teacher
 import uuid
 
-Course = Course_Class.Course
-Teacher = Teacher_Class.Teacher
+Course = Course.Course
+Teacher = Teacher.Teacher
 
 class Section:
     def __init__(self):
