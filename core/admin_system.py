@@ -21,3 +21,18 @@ class Admin_system(System.System):
     def createCourse(cls,course_name,period,price):
         update_course_info_sql="INSERT INTO course_info(name,price,period,id) VALUES (\'" + course_name + "\'," + str(price) + "," + str(period) + ",\'" + super().generateId() + "\')"
         super().writeToDB(update_course_info_sql)
+
+    @classmethod
+    def createSchool(cls,location):
+        update_school_info_sql="INSERT INTO school_info(id,location) VALUES (\'" + super().generateId() + "\',\'" + location + "\')"
+        super().writeToDB(update_school_info_sql)
+
+    @classmethod
+    def listSchool(cls):
+        query_school_info_sql="SELECT * FROM school_info"
+        raw = super().readFromDB(query_school_info_sql)
+
+        data={}
+        for d in raw:
+            data[d[1]]=School.School(d[0],d[1])
+        return data

@@ -28,3 +28,8 @@ class School(System.System):
 
         update_section_info_sql="INSERT INTO section_info (id,course_name,school_id,teacher_id,section_id) VALUES (\'" + super().generateId() + "\',\'" + course.getName() + "\',\'" + self.getId() + "\',\'" + teacher.getId() + "\'," + str(section_id) +")"
         super().writeToDB(update_section_info_sql)
+
+# s=School("schoolid","Shanghai")
+# c=Course.Course("python",123,456)
+# t=Teacher.Teacher("teacher_id","yifan")
+# s.createSection(c,t)

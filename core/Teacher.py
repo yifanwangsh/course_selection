@@ -1,27 +1,47 @@
 import Person
+import Section
+import Student
 
 class Teacher(Person.Person):
-    def __init__(self, id, name, school_id):
+    def __init__(self, id, name):
         super().__init__(name, id)
-        self.__school=school_id
 
     def listSections(self):
         query_section_sql="SELECT id FROM section_info WHERE teacher_id=\'" + self.getId() + "\'"
-        data=super().readFromDB(query_section_sql)[0]
+        raw=super().readFromDB(query_section_sql)
+        data=[]
+        for d in raw:
+            data.append(d[0])
         return data
 
     def updateGrade(self,section,student,grade):
+        if not isinstance(section,Section.Section) or not isinstance(student,Student.Student):
+            raise TypeError("Rejected")
+
         if section.getId() not in self.listSections():
             raise KeyError("Rejected!") 
         
-        update_grade_sql="UPDATE student_grades SET grade = " + str(grade) + " WHERE student_id = \'" + student.getId() + "\' AND section_id = \'" + section.getId() + "\'"
+        query_section_info_sql='''SELECT sec.course_name,sch.location,sec.section_id FROM section_info AS sec LEFT JOIN school_info AS sch ON sec.school_id=sch.id
+                                    WHERE sec.id=\'''' + section.getId() + "\'"
+        raw=super().readFromDB(query_section_info_sql)[0]
+        table_name=raw[0]+"_in_"+raw[1]+"_"+str(raw[2])
+
+        update_grade_sql="UPDATE " + table_name + " SET student_grade = " + str(grade) + " WHERE student_id = \'" + student.getId() + "\'"
         super().writeToDB(update_grade_sql)    
 
     def listStudentsName(self,section):
         if section.getId() not in self.listSections():
             raise KeyError("Rejected!")
         
-        list_student_name_sql='''SELECT student_info.name FROM student_info LEFT JOIN section_info
-            WHERE section_info.teacher_id = ''' + self.getId()
-        data=super().readFromDB(list_student_name_sql)
+        query_section_info_sql='''SELECT sec.course_name,sch.location,sec.section_id FROM section_info AS sec LEFT JOIN school_info AS sch ON sec.school_id=sch.id
+                                    WHERE sec.id=\'''' + section.getId() + "\'"
+        raw=super().readFromDB(query_section_info_sql)[0]
+        table_name=raw[0]+"_in_"+raw[1]+"_"+str(raw[2])
+
+        query_student_name_sql="SELECT stu.name FROM student_info AS stu LEFT JOIN " + table_name + " AS sec ON sec.student_id=stu.id"
+        raw=super().readFromDB(query_student_name_sql)
+
+        data=[]
+        for d in raw:
+            data.append(d[0])
         return data

@@ -1,4 +1,3 @@
-import uuid
 import System
 
 class Person(System.System):

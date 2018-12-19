@@ -1,5 +1,6 @@
 import System
 import Teacher
+
 class Teacher_system(System.System):
     def __init__(self):
         pass

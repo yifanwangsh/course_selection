@@ -1,5 +1,6 @@
 import psycopg2
 import hashlib
+import time
 
 class System:
     def __init__(self):
@@ -23,4 +24,4 @@ class System:
 
     @staticmethod
     def generateId():
-        return hashlib.sha256().hexdigest()
+        return hashlib.sha256(str.encode(str(time.time()))).hexdigest()
