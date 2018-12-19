@@ -8,7 +8,6 @@ class Course:
 
         if not isinstance(name, str):
             raise TypeError("Course name must be a str")
-
         self.__name = name
         self.__period = period
         self.__price = price

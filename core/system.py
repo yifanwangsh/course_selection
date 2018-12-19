@@ -1,7 +1,8 @@
 import psycopg2
+import hashlib
 
 class System:
-    def __init__():
+    def __init__(self):
         pass
     
     @staticmethod
@@ -19,3 +20,7 @@ class System:
         conn.commit()
         cursor.close()
         conn.close()
+
+    @staticmethod
+    def generateId():
+        return hashlib.sha256().hexdigest()

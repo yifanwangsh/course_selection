@@ -1,7 +1,7 @@
 import psycopg2
-import uuid
 import Student
 import Section
+import School
 import System
 
 class Student_system(System.System):
@@ -11,27 +11,28 @@ class Student_system(System.System):
     @classmethod
     def login(cls,username,password):
         
-        auth_query_sql="SELECT username,password FROM public.student_auth_info"
+        auth_query_sql="SELECT name,passcode FROM student_auth_info"
         auth=super().readFromDB(auth_query_sql)
 
         for d in auth:
             if username==d[0] and password==d[1]:
                 print ("Login Successful!")
-                student_info_sql="SELECT * FROM public.student_info WHERE name = \'" + username + "\'"
+                student_info_sql="SELECT * FROM student_info WHERE name = \'" + username + "\'"
                 info=super().readFromDB(student_info_sql)[0]
-                return Student(info[0],info[1],info[2],info[3])
+                return Student.Student(info[0],info[1])
         print ("Login Failed")
         return
 
     @classmethod
-    def signup(cls,username,password):
+    def signup(cls,username,password,school):
         if not password or not username:
             raise KeyError("username or password cannot be null")
         
-        update_auth_sql="INSERT INTO public.student_auth_info(username,password) VALUES (\'" + username + "\',\'" + password + "\')"
+        if not isinstance(school, School.School):
+            raise TypeError("Rejected")
+        
+        update_auth_sql="INSERT INTO student_auth_info(name,passcode) VALUES (\'" + username + "\',\'" + password + "\')"
         super().writeToDB(update_auth_sql)
 
-        random_id=uuid.uuid4().int>>100
-        update_student_info="INSERT INTO public.student_info(name,id) VALUES (\'" + username + "\'," + str(random_id) + ")"
+        update_student_info="INSERT INTO student_info(name,id,school_id) VALUES (\'" + username + "\',\'" + super().generateId() + "\',\'" + str(school.getId()) + "\')"
         super().writeToDB(update_student_info)
-

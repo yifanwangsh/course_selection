@@ -1,12 +1,6 @@
-import uuid
-
 class Section:
-    def __init__(self):
-        self.__id = self.gernerateId()
+    def __init__(self,id):
+        self.__id = id
 
-    @staticmethod
-    def gernerateId():
-        return uuid.uuid4()
-
-    def getId():
+    def getId(self):
         return self.__id 

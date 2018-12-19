@@ -1,24 +1,30 @@
 import Course
+import Teacher
+import System
 
-Course = Course.Course
-
-class School:
-    def __init__ (self, location):
+class School(System.System):
+    def __init__ (self, id, location):
         self.__location = location
-        self.__courses = []
+        self.__id = id
+        self.__generator = (i for i in range(1,100))
 
     def setLocation(self, location):
         self.__location = location
 
     def getLocation(self):
-        return self.__location
+        return self.__location    
 
-    def addCourse(self, course):
-        if not isinstance(course, Course):
-            raise TypeError("Add course operaion cannot be performed" + 
-            "because this is not a Course Type")
+    def getId(self):
+        return self.__id
 
-        self.__courses.append(course)
+    def createSection(self,course,teacher):
+        if not isinstance(course,Course.Course) or not isinstance(teacher,Teacher.Teacher):
+            raise TypeError("Rejected!")
+        
+        section_id=next(self.__generator)
 
-    def getCourses(self):
-        return self.__courses      
+        create_section_table_sql="CREATE TABLE " + course.getName() + "_in_" + self.getLocation() + "_" + str(section_id) + " (student_id varchar NOT NULL PRIMARY KEY, student_grade integer, tuition_paid boolean DEFAULT FALSE)"
+        super().writeToDB(create_section_table_sql)
+
+        update_section_info_sql="INSERT INTO section_info (id,course_name,school_id,teacher_id,section_id) VALUES (\'" + super().generateId() + "\',\'" + course.getName() + "\',\'" + self.getId() + "\',\'" + teacher.getId() + "\'," + str(section_id) +")"
+        super().writeToDB(update_section_info_sql)
