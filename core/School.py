@@ -21,13 +21,20 @@ class School(System.System):
             raise TypeError("Rejected!")
         
         query_max_section_id_sql="SELECT MAX(section_id) FROM section_info WHERE course_name=\'" + course.getName() + "\' AND teacher_id=\'" + teacher.getId() + "\' AND school_id=\'" + self.getId() + "\'"
-        section_id = super().readFromDB(query_max_section_id_sql)[0][0]+1
+        max_section_id = super().readFromDB(query_max_section_id_sql)[0][0]
+        if max_section_id: 
+            section_id=max_section_id+1
+        else:
+            section_id=1 
 
         create_section_table_sql="CREATE TABLE " + course.getName() + "_in_" + self.getLocation() + "_" + str(section_id) + " (student_id varchar NOT NULL PRIMARY KEY, student_grade integer, tuition_paid boolean DEFAULT FALSE)"
         super().writeToDB(create_section_table_sql)
 
         update_section_info_sql="INSERT INTO section_info (id,course_name,school_id,teacher_id,section_id) VALUES (\'" + super().generateId() + "\',\'" + course.getName() + "\',\'" + self.getId() + "\',\'" + teacher.getId() + "\'," + str(section_id) +")"
         super().writeToDB(update_section_info_sql)
+
+        section_name=course.getName() + "_in_" + self.getLocation() + "_" + str(section_id)
+        print ("Section " + section_name + " has been created!\n")
     
     def listTeacher(self):
         query_teacher_info_sql="SELECT * FROM teacher_info WHERE school_id= \'" + self.getId() + "\'"

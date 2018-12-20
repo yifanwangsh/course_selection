@@ -6,15 +6,13 @@ class Teacher_system(System.System):
         pass
     
     @classmethod
-    def login(cls,username,password):
-        auth_query_sql="SELECT name,passcode FROM teacher_auth_info"
-        auth=super().readFromDB(auth_query_sql)
-
-        for d in auth:
-            if username==d[0] and password==d[1]:
-                print ("Login Successful!")
-                teacher_info_sql="SELECT * FROM teacher_info WHERE name = \'" + username + "\'"
-                info=super().readFromDB(teacher_info_sql)[0]
-                return Teacher.Teacher(info[0],info[1])
-        print ("Login Failed")
-        return
+    def login(cls,name,passcode):
+        query_teacher_auth_sql="SELECT 1 FROM teacher_auth_info WHERE name = \'" + name + "\' AND passcode = \'" + passcode + "\' LIMIT 1"
+        if super().readFromDB(query_teacher_auth_sql):
+            teacher_info_sql="SELECT * FROM teacher_info WHERE name = \'" + name + "\'"
+            raw=super().readFromDB(teacher_info_sql)[0]
+            print ("Login Successful!\n")
+            return Teacher.Teacher(raw[0],raw[1])
+        else:
+            print ("Login Failed!\n")
+            return

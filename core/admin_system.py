@@ -17,16 +17,22 @@ class Admin_system(System.System):
 
         update_teacher_info_sql="INSERT INTO teacher_info(name,id,school_id) VALUES (\'" + name + "\',\'" + super().generateId() + "\',\'" + school.getId() + "\')"
         super().writeToDB(update_teacher_info_sql)
+
+        print ("Teacher " + name + " has been created in " + school.getLocation() + "!\n")
     
     @classmethod
     def createCourse(cls,course_name,period,price):
         update_course_info_sql="INSERT INTO course_info(name,price,period) VALUES (\'" + course_name + "\'," + str(price) + "," + str(period) + ")"
         super().writeToDB(update_course_info_sql)
 
+        print ("Course " + course_name + " has been created!\n")
+
     @classmethod
     def createSchool(cls,location):
         update_school_info_sql="INSERT INTO school_info(id,location) VALUES (\'" + super().generateId() + "\',\'" + location + "\')"
         super().writeToDB(update_school_info_sql)
+
+        print ("School in " + location + " has been created!\n")
 
     @classmethod
     def listSchool(cls):

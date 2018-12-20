@@ -9,11 +9,11 @@ def student_system():
     system=Student_system.Student_system
     while True:
         print ('''---You are now in student system---
-            1.Log in
-            2.Sign up
-            q.Exit to main menu
+    1.Log in
+    2.Sign up
+    q.Exit to main menu
         
-        How can I help you?''')
+How can I help you?''')
         c=input("==>")
         if c=="q": break
         
@@ -43,23 +43,25 @@ def student_loged_in(student):
     while True:
         print ("---You are now loged in as " + student.getName() + " ---")
         print ('''
-            1.enroll in a section
-            2.pay tuition for a section
-            q.log out
+    1.enroll in a section
+    2.pay tuition for a section
+    q.log out
         
-        How can I help you?''')
+How can I help you?''')
         c=input("==>")
         if c=="q":break
 
         elif c=="1":
             available_section_info=system.listAvailableSections(student)
             section=util._choose(available_section_info,"section")
-            student.enroll(section)
+            if section:
+                student.enroll(section)
         
         elif c=="2":
             enrolled_section_info=student.listEnrolledSection()
             section=util._choose(enrolled_section_info,"section")
-            student.paytuition(section)
+            if section:
+                student.paytuition(section)
 
         else:
             print ("Invalid choice. Rejected")
@@ -77,19 +79,39 @@ def teacher_system():
         while True:
             print ("---You are now logged in as " + teacher.getName() + " ---")
             print ('''
-            1.upgrade student grade
-            2.check students' name
-            3.check section
+    1.upgrade student grade
+    2.check students' name in a section
+    3.check section
+    q.log out
 
-            How can I help you?''')
+How can I help you?''')
             c=input("==>")
             if c=="q":break
             
             elif c=="1":
-                pass
+                print ("You are teaching the following sections:")
+                section_info=teacher.listSections()
+                section=util._choose(section_info,"section")
+                if section:
+                    print ("Please choose which student's grade to update:")
+                    student=util._choose(teacher.listStudentsName(section),"student")
+                    if student:
+                        print ("Please enter his/her grade")
+                        grade=input("==>")
+                        teacher.updateGrade(section,student,grade)
             
+            elif c=="2":
+                print ("You are teaching the following sections:")
+                section_info=teacher.listSections()
+                section=util._choose(section_info,"section")
+                if section:
+                    print ("These students are in your section:")
+                    util.listKeys(teacher.listStudentsName(section))
+
             elif c=="3":
-                print (teacher.listSections())
+                print ("You are teaching the following sections:")
+                util.listKeys(teacher.listSections().keys())
+                print ("-----------------\n")
 
 def admin_system():
     print ("You need to provide admin credential to login")
@@ -101,13 +123,13 @@ def admin_system():
     system=Admin_system.Admin_system()
     while True:
         print ('''---You are now in admin system---
-            1.create a new school
-            2.create a new course
-            3.create a new teacher
-            4.create a new section
-            q.Exit to main menu
+    1.create a new school
+    2.create a new course
+    3.create a new teacher
+    4.create a new section
+    q.Exit to main menu
         
-        How can I help you?''')
+How can I help you?''')
         c=input("==>")
         if c=="q": break
         
@@ -153,7 +175,7 @@ while True:
     3.Admin System
     q.Exit Class System
 
-Please input your choice''')
+How can I help you?''')
 
     c=input("==>")
     if c=="q":

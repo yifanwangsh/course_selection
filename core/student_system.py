@@ -9,19 +9,16 @@ class Student_system(System.System):
         pass
 
     @classmethod
-    def login(cls,username,password):
-        
-        auth_query_sql="SELECT name,passcode FROM student_auth_info"
-        auth=super().readFromDB(auth_query_sql)
-
-        for d in auth:
-            if username==d[0] and password==d[1]:
-                print ("Login Successful!")
-                student_info_sql="SELECT * FROM student_info WHERE name = \'" + username + "\'"
-                info=super().readFromDB(student_info_sql)[0]
-                return Student.Student(info[1],info[0])
-        print ("Login Failed")
-        return
+    def login(cls,name,passcode):
+        query_student_auth_sql="SELECT 1 FROM student_auth_info WHERE name = \'" + name + "\' AND passcode = \'" + passcode + "\' LIMIT 1"
+        if super().readFromDB(query_student_auth_sql):
+            student_info_sql="SELECT * FROM student_info WHERE name = \'" + name + "\'"
+            raw=super().readFromDB(student_info_sql)[0]
+            print ("Login Successful!\n")
+            return Student.Student(raw[1],raw[0])
+        else:
+            print ("Login Failed!\n")
+            return
 
     @classmethod
     def signup(cls,name,password,school):
@@ -36,6 +33,8 @@ class Student_system(System.System):
 
         update_student_info="INSERT INTO student_info(name,id,school_id) VALUES (\'" + name + "\',\'" + super().generateId() + "\',\'" + str(school.getId()) + "\')"
         super().writeToDB(update_student_info)
+
+        print ("You've signed up successfully as " + name + "!\n")
     
     @classmethod
     def listAvailableSections(cls,student):

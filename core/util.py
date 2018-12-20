@@ -32,3 +32,8 @@ def _choose(dict,name):
             return dict[key_list[s]]
         else:
             print ("Invalid choice")
+
+def listKeys(key_list):
+    for i in range(len(key_list)):
+        print (str(i+1) + "." + key_list[i])
+    print ("\n")
