@@ -15,6 +15,6 @@ class Teacher_system(System.System):
                 print ("Login Successful!")
                 teacher_info_sql="SELECT * FROM teacher_info WHERE name = \'" + username + "\'"
                 info=super().readFromDB(teacher_info_sql)[0]
-                return Teacher.Teacher(info[0],info[1],info[2])
+                return Teacher.Teacher(info[0],info[1])
         print ("Login Failed")
         return

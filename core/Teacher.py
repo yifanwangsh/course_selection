@@ -7,11 +7,13 @@ class Teacher(Person.Person):
         super().__init__(name, id)
 
     def listSections(self):
-        query_section_sql="SELECT id FROM section_info WHERE teacher_id=\'" + self.getId() + "\'"
+        query_section_sql="SELECT sec.id,sec.course_name,sch.location,sec.section_id FROM section_info AS sec LEFT JOIN school_info AS sch ON sec.school_id=sch.id WHERE sec.teacher_id=\'" + self.getId() + "\'"
         raw=super().readFromDB(query_section_sql)
-        data=[]
+        
+        data={}
         for d in raw:
-            data.append(d[0])
+            section_description=d[1] + " in " + d[2] + " section number " + str(d[3])
+            data[section_description] = Section.Section(d[0])
         return data
 
     def updateGrade(self,section,student,grade):

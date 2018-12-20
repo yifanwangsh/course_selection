@@ -19,7 +19,7 @@ class Student_system(System.System):
                 print ("Login Successful!")
                 student_info_sql="SELECT * FROM student_info WHERE name = \'" + username + "\'"
                 info=super().readFromDB(student_info_sql)[0]
-                return Student.Student(info[0],info[1])
+                return Student.Student(info[1],info[0])
         print ("Login Failed")
         return
 
@@ -47,6 +47,7 @@ class Student_system(System.System):
 
         data={}
         for d in raw:
-            section_description=d[1] + " in " + d[2] + " section number " + d[3]
+            section_description=d[1] + " in " + d[2] + " section number " + str(d[3])
             data[section_description] = Section.Section(d[0])
         return data
+    

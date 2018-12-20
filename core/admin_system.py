@@ -1,4 +1,5 @@
 import psycopg2
+import Course
 import School
 import System
 
@@ -19,7 +20,7 @@ class Admin_system(System.System):
     
     @classmethod
     def createCourse(cls,course_name,period,price):
-        update_course_info_sql="INSERT INTO course_info(name,price,period,id) VALUES (\'" + course_name + "\'," + str(price) + "," + str(period) + ",\'" + super().generateId() + "\')"
+        update_course_info_sql="INSERT INTO course_info(name,price,period) VALUES (\'" + course_name + "\'," + str(price) + "," + str(period) + ")"
         super().writeToDB(update_course_info_sql)
 
     @classmethod
@@ -35,4 +36,14 @@ class Admin_system(System.System):
         data={}
         for d in raw:
             data[d[1]]=School.School(d[0],d[1])
+        return data
+
+    @classmethod
+    def listCourse(cls):
+        query_course_info_sql="SELECT * FROM course_info"
+        raw = super().readFromDB(query_course_info_sql)
+
+        data={}
+        for d in raw:
+            data[d[0]]=Course.Course(d[0],d[1],d[2])
         return data

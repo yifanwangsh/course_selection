@@ -2,6 +2,8 @@ import Student
 import Student_system
 import Teacher_system
 import Admin_system
+import School
+import util
 
 def student_system():
     system=Student_system.Student_system
@@ -29,7 +31,7 @@ def student_system():
             name=input("==>")
             print ("Please enter a password for authorization")
             passcode=input("==>")
-            school=chooseSchool()
+            school=util.chooseSchool()
             if school:
                 system.signup(name,passcode,school)
             
@@ -51,22 +53,43 @@ def student_loged_in(student):
 
         elif c=="1":
             available_section_info=system.listAvailableSections(student)
-            while True:
-                print ("The following sections are available:")
-                listOptions(available_section_info)
-                print ("Please choose which section you want to enroll in. Press q to quit")
-                inp=input("==>")
-                if inp=="q":return
-                s=int(inp)-1
-                if s in range(len(available_section_info)):
-                    return school_info[location_list[s]]
+            section=util._choose(available_section_info,"section")
+            student.enroll(section)
+        
+        elif c=="2":
+            enrolled_section_info=student.listEnrolledSection()
+            section=util._choose(enrolled_section_info,"section")
+            student.paytuition(section)
+
         else:
             print ("Invalid choice. Rejected")
 
 
-
 def teacher_system():
-    pass
+    system=Teacher_system.Teacher_system
+    print ("---You are now in Teacher system---")
+    print ("Please enter your name")
+    name=input("==>")
+    print ("Please enter your password")
+    passcode=input("==>")
+    teacher=system.login(name,passcode)
+    if teacher:
+        while True:
+            print ("---You are now logged in as " + teacher.getName() + " ---")
+            print ('''
+            1.upgrade student grade
+            2.check students' name
+            3.check section
+
+            How can I help you?''')
+            c=input("==>")
+            if c=="q":break
+            
+            elif c=="1":
+                pass
+            
+            elif c=="3":
+                print (teacher.listSections())
 
 def admin_system():
     print ("You need to provide admin credential to login")
@@ -81,6 +104,7 @@ def admin_system():
             1.create a new school
             2.create a new course
             3.create a new teacher
+            4.create a new section
             q.Exit to main menu
         
         How can I help you?''')
@@ -106,33 +130,21 @@ def admin_system():
             teacher_name=input("==>")
             print ("Please enter a passcode for authorization")
             passcode=input("==>").strip()
-            school=chooseSchool()
+            school=util.chooseSchool()
             if school:
                 system.createTeacher(teacher_name,passcode,school)
-            
-            
-
-def chooseSchool():
-    system=Admin_system.Admin_system
-    school_info=system.listSchool()
-
-    while True:
-        print ("We have school in:")
-        listOptions(school_info)
-        print ("Please choose a school. Press q to quit")
-        inp=input("==>")
-        if inp=="q":return
-        s=int(inp)-1
-        if s in range(len(location_list)):
-            return school_info[location_list[s]]
-        else:
-            print ("Invalid choice. Rejected")    
-
-def listOptions(dict):
-    key_list=list(dict.keys())
-    for i in range(len(key_list)):
-        print (str(i+1) + "." + key_list[i])
-
+          
+        elif c=="4":
+            print ("Which school is the new section located in?")
+            school=util.chooseSchool()
+            if school:
+                print ("What is the course of the new section?")
+                course=util.chooseCourse()
+                print ("Who is the teacher for the new section?")
+                teacher=util.chooseTeacher(school)
+                if course and teacher:
+                    school.createSection(course,teacher)
+                
 while True:
     print('''----Welcome to the Class System----
 
