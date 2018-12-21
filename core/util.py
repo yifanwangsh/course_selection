@@ -24,6 +24,9 @@ def _choose(dict,name):
         print ("The following " + name + " is available:")
         for i in range(len(key_list)):
             print (str(i+1) + "." + key_list[i])
+        if not key_list:
+            print ("There is no " + name + " available!\n")
+            return
         print ("Please choose a " + name + ". Press q to quit")
         inp=input("==>")
         if inp=="q":return

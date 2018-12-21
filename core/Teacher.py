@@ -32,14 +32,16 @@ class Teacher(Person.Person):
 
     def listStudentsName(self,section):
         query_section_info_sql='''SELECT sec.course_name,sch.location,sec.section_id FROM section_info AS sec LEFT JOIN school_info AS sch ON sec.school_id=sch.id
-                                    WHERE sec.id=\'''' + section.getId() + "\'"
+                                    WHERE sec.id=\'''' + section.getId() + "\' AND sec.teacher_id=\'" + self.getId() +"\'"
         raw=super().readFromDB(query_section_info_sql)[0]
-        table_name=raw[0]+"_in_"+raw[1]+"_"+str(raw[2])
+        
+        if raw:
+            table_name=raw[0]+"_in_"+raw[1]+"_"+str(raw[2])
 
-        query_student_name_sql="SELECT stu.name ,stu.id FROM student_info AS stu LEFT JOIN " + table_name + " AS sec ON sec.student_id=stu.id"
-        raw=super().readFromDB(query_student_name_sql)
+            query_student_name_sql="SELECT name,id FROM student_info AS stu WHERE EXISTS (SELECT 1 FROM " + table_name + " AS sec WHERE stu.id=sec.student_id)"
+            raw=super().readFromDB(query_student_name_sql)
 
-        data={}
-        for d in raw:
-            data[d[0]]=Student.Student(d[0],d[1])
-        return data
+            data={}
+            for d in raw:
+                data[d[0]]=Student.Student(d[0],d[1])
+            return data

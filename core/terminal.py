@@ -89,7 +89,6 @@ How can I help you?''')
             if c=="q":break
             
             elif c=="1":
-                print ("You are teaching the following sections:")
                 section_info=teacher.listSections()
                 section=util._choose(section_info,"section")
                 if section:
@@ -101,16 +100,15 @@ How can I help you?''')
                         teacher.updateGrade(section,student,grade)
             
             elif c=="2":
-                print ("You are teaching the following sections:")
                 section_info=teacher.listSections()
                 section=util._choose(section_info,"section")
                 if section:
                     print ("These students are in your section:")
-                    util.listKeys(teacher.listStudentsName(section))
+                    util.listKeys(list(teacher.listStudentsName(section).keys()))
 
             elif c=="3":
                 print ("You are teaching the following sections:")
-                util.listKeys(teacher.listSections().keys())
+                util.listKeys(list(teacher.listSections().keys()))
                 print ("-----------------\n")
 
 def admin_system():
